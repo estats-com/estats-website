@@ -34,10 +34,10 @@ class Jogador(models.Model):
     def get_absolute_url(self):
         return "/jog%s/"%self.id
 
-    def get_clubeByData(self, data):
-        if not data isinstance(data, datetime.date):
+    def get_clubeByData(self, dia):
+        if not isinstance(dia, datetime.date):
             raise ValueError(u'Valor deve ser do tipo datetime.date')
-        return da.contrato_set.get(data_fim__gt = data)
+        return da.contrato_set.get(data_fim__gt = dia)
 
 class Estadio(models.Model):
     ESTADOS = (('RS', 'Rio Grande do Sul'),
@@ -69,10 +69,10 @@ class Estadio(models.Model):
               )
     ESTADOS = sorted(list(ESTADOS), key = itemgetter(1))
     nome = models.CharField(max_length = 50)
-    longitude = models.FloatField(blank = True)
-    latitude = models.FloatField(blank = True)
+    longitude = models.FloatField(blank = True, null= True)
+    latitude = models.FloatField(blank = True, null = True)
     cidade = models.CharField(max_length = 50, blank = True)
-    uf = models.CharField(max_length = 2, choices = ESTADOS)
+    uf = models.CharField(max_length = 2, blank = True, choices = ESTADOS)
 
     def __str__(self):
         return "{} ({})".format(self.nome, self.uf)
@@ -80,8 +80,10 @@ class Estadio(models.Model):
 class Clube(models.Model):
     id = models.IntegerField(primary_key = True)
     nome = models.CharField(max_length = 30)
+    nomeCBF = models.CharField(max_length = 30, blank = True)
+    nomeELO = models.CharField(max_length = 30, blank = True)
     plantel = models.ManyToManyField(Jogador, through = "Contrato")
-    estadio = models.ForeignKey(Estadio, related_name = 'clubes', on_delete = models.CASCADE)
+    estadio = models.ForeignKey(Estadio, blank = True, null = True, related_name = 'clubes', on_delete = models.CASCADE)
     escudoP = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, 'media/clubes/P/'))
     escudoM = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, 'media/clubes/M/'))
     escudoG = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, 'media/clubes/G/'))
@@ -90,7 +92,7 @@ class Clube(models.Model):
         ordering = ['nome','id']
 
     def __str__(self):
-        return "%s (%s)"%(self.nome, self.estadio.uf)
+        return "%s"%(self.nome)
 
     def get_absolute_url(self):
         return "/clube%s/"%self.id
@@ -110,8 +112,8 @@ class Partida(models.Model):
     rodada = models.IntegerField()
     mandante = models.ForeignKey(Clube, related_name = 'mandante', on_delete = models.CASCADE)
     visitante = models.ForeignKey(Clube, related_name = 'visitante', on_delete = models.CASCADE)
-    gol_mandante = models.IntegerField(blank = True)
-    gol_visitante = models.IntegerField(blank = True)
+    gol_mandante = models.IntegerField(blank = True, null = True)
+    gol_visitante = models.IntegerField(blank = True, null = True)
     resultado = models.CharField(max_length = 1, blank = True)
     data = models.DateTimeField()
     validaCartola = models.BooleanField()
@@ -148,7 +150,7 @@ class Scouts(models.Model):
     )
     jogador = models.ForeignKey(Jogador, related_name = 'scouts', on_delete=models.CASCADE)
     partida = models.ForeignKey(Partida, related_name ='scouts', on_delete=models.CASCADE)
-    clube = models.ForeignKey(Clube, blank = True, related_name ='scouts', on_delete=models.CASCADE)
+    para = models.CharField(max_length = 10, default = 'mandante')
     #getClubeByData -> usar classe Membership para buscar qual clube na data da partida estava o jogador
     #local - MAN ou VIS dependendo da partida e qual clue membership na data
     preco = models.FloatField()
@@ -175,7 +177,11 @@ class Scouts(models.Model):
     ff = models.IntegerField(default = 0)
 
     def save(self, *args, **kwds):
-        self.clube = self.jogador.get_clubeByData(self.data)
+        clu = self.jogador.get_clubeByData(self.partida.data)
+        if clu == self.partida.mandante:
+            self.para = 'mandante'
+        else:
+            self.para = 'visitante'
         super(Scouts, self).save(*args, **kwds)
 
     def __str__(self):
