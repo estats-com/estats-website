@@ -1,31 +1,413 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 
     <head>
+      <meta charset="UTF-8">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Open+Sans|Oxygen|PT+Sans+Narrow|Raleway|Roboto+Condensed|Staatliches|Work+Sans" rel="stylesheet">
+      <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
       <title>Estats Cartola</title>
 
+      <style type="text/css">
+
+        body { margin: 0; padding: 0; }
+
+        a {
+          text-decoration: none;
+          color: inherit;
+
+        }
+
+        #topbar {
+          display: flex;
+          width: 1200px;
+          margin: 0 auto;
+          flex-direction: row;
+          justify-content: space-around;
+          background: #cccccc
+
+
+        }
+
+
+
+        .Flogo {
+          display: block;
+          width: 250px;
+
+
+        }
+
+        .topmenu {
+          padding: 10px;
+          display: block;
+          margin-top: 22px;
+          font-family: 'Roboto Condensed', sans-serif;
+          font-size: 20px;
+          font-weight: bold;
+          text-transform: uppercase;
+
+
+        }
+
+        .material-icons.md-48 { font-size: 48px; }
+
+        #userpic {
+          margin-top: 7px;
+        }
+
+        .topmenu a:hover {
+          color: #ad9147;
+
+        }
+
+        #content {
+          display: flex;
+          width: 1200px;
+          margin: 0 auto;
+          height: auto;
+          flex-direction: row;
+          justify-content: space-around;
+
+
+        }
+
+        .leftbar {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          height: auto;
+          width: 300PX;
+          border: 1px solid ;
+          border-color: #c1c5cc;
+
+        }
+        #logocartola {
+          display: block;
+          width: 150px;
+          padding-top: 5px;
+
+        }
+
+        #menucartola {
+          display: block;
+          align-self: stretch;
+          width: 250px;
+          list-style-type: none;
+          padding-left: 20px;
+          font-weight: bold;
+          font-family: 'Roboto Condensed', sans-serif;
+          font-size: 25px;
+          border-top: 1px solid #cccccc;
+
+        }
+
+        #menucartola a:hover {
+          color: #d8b861;
+
+        }
+
+
+
+        .menu {
+          padding-top: 30px;
+        }
+
+
+        .centro {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          height: auto;
+          width: 600px;
+          border: 1px solid ;
+          border-color: #c1c5cc;
+          font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        #Principal img {
+
+          width: 550px;
+          height: 275px;
+
+        }
+
+        #pri1 {
+          display: block;
+          width: 550px
+        }
+
+        #Principal {
+          border-bottom: 2px solid #cccccc
+        }
+
+        .secundario {
+          display: flex;
+          width: 600px;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          padding-top: 20px;
+
+        }
+
+
+        .secundario img {
+
+          width: 220px;
+          height: 110px;
+        }
+
+        .sec {
+          display: block;
+          width: 220px
+        }
+
+
+        .rightbar {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          height: auto;
+          width: 400PX;
+          border: 1px solid ;
+          border-color: #c1c5cc;
+          font-family: 'Roboto Condensed', sans-serif;
+          font-size: 20px;
+        }
+
+        #footer {
+          display: flex;
+          width: 1200px;
+          margin: 0 auto;
+          flex-direction: row;
+          justify-content: space-around;
+          background: #cccccc
+
+
+        }
+
+        footer ul li {
+          display: inline-block;
+        }
+
+        footer ul li a {
+
+          margin: 0 10px;
+
+        }
+
+        p > a:hover{
+            color: #d9d9d9;
+            text-decoration:  underline;
+        }
+
+        ul {
+            padding:0;
+            list-style: none;
+        }
+        .footer-social-icons {
+            width: 350px;
+            display:block;
+
+        }
+        .social-icon {
+            color: #fff;
+        }
+        ul.social-icons {
+            margin-top: 30px;
+        }
+        .social-icons li {
+            vertical-align: top;
+            }
+        .social-icons a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .fa-facebook {
+            padding:10px 14px;
+            -o-transition:.5s;
+            -ms-transition:.5s;
+            -moz-transition:.5s;
+            -webkit-transition:.5s;
+            transition: .5s;
+            background-color: #322f30;
+        }
+        .fa-facebook:hover {
+            background-color: #3d5b99;
+        }
+        .fa-twitter {
+            padding:10px 12px;
+            -o-transition:.5s;
+            -ms-transition:.5s;
+            -moz-transition:.5s;
+            -webkit-transition:.5s;
+            transition: .5s;
+            background-color: #322f30;
+        }
+        .fa-twitter:hover {
+            background-color: #00aced;
+        }
+
+        .fa-youtube {
+            padding:10px 12px;
+            -o-transition:.5s;
+            -ms-transition:.5s;
+            -moz-transition:.5s;
+            -webkit-transition:.5s;
+            transition: .5s;
+            background-color: #322f30;
+        }
+        .fa-youtube:hover {
+            background-color: #e64a41;
+        }
+
+        .fa-instagram {
+            padding:10px 12px;
+            -o-transition:.5s;
+            -ms-transition:.5s;
+            -moz-transition:.5s;
+            -webkit-transition:.5s;
+            transition: .5s;
+            background-color: #322f30;
+        }
+        .fa-instagram:hover {
+            background-color: #8134AF;
+        }
+
+
+
+
+      </style>
+
     </head>
 
-    <body>
+      <body>
+
+        <div id="topbar">
+
+          <a href="{% url 'cartola:home'%}" target="_blank"><img class="Flogo" src="../../static/cartola/logoEstats.png" ></a>
+
+          <div id="home" class="topmenu">
+            <a href="#">Futebol</a>
+          </div>
+
+          <div id="NBA" class="topmenu">
+            <a href="#">NBA</a>
+          </div>
+
+          <div id="NFL" class="topmenu">
+            <a href="#">NFL</a>
+          </div>
+
+          <div id="space" class="topmenu">
+          </div>
+          <div id="space" class="topmenu">
+          </div>
+          <div id="space" class="topmenu">
+          </div>
+          <div id="space" class="topmenu">
+          </div>
+
+          <div id="sejasocio" class="topmenu">
+            <a href="#">Seja Socio</a>
+          </div>
+
+          <div id="userpic" class="topmenu">
+            <a href="#"><i class="material-icons md-48">account_circle</i></a>
+          </div>
+
+        </div>
+
+        <div id="content">
 
 
-      <h1>Estats Cartola</h1>
-        <img src="https://pbs.twimg.com/profile_images/973553970777075714/fpY19u69_400x400.jpg" width="150">
+          <div class="leftbar">
+            <p> <a href="https://globoesporte.globo.com/cartola-fc/" target="_blank"><img id="logocartola" src="img\cartola-fc.png" alt=""></a></p>
 
-        <p>Somos um perfil dedicado à análise estatística do Cartola FC, com dicas para você montar o seu time e mitar na sua liga. <br>Top 20 em 2013 e Top 1000 por 6 anos seguidos</p>
-        <a class="twitter-timeline" data-width="300" data-height="400" data-theme="dark" href="https://twitter.com/estats_cartola?ref_src=twsrc%5Etfw">Tweets by estats_cartola</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      <hr>
+            <ul id= "menucartola">
+              <li id="PontosCedidos" class="menu"><a href="#">Pontos Cedidos</a></li>
 
-        <h2 id=pontos> Pontos Cedidos <h2>
-          <img src="10_pontos.png" width="500">
-          <a href="#RBs">Veja tambem Rbs</a>
-      <hr>
-          <h2 id= RBs> RB Cedidos <h2>
-            <img src="8_RB.png" width="500">
-            <a href="#pontos">Veja tambem pontos</a>
-      <hr>
-      <p> <a href="socio.html"> <input type="submit" value="Seja Socio"></a> </p>
-    </body>
+              <li id="RBCedidos" class="menu"><a href="#">RB Cedidos</a></li>
+
+              <li id="GolsSofridos" class="menu"><a href="#">Gols sofridos</a></li>
+
+              <li id="Scouts" class="menu"><a href="#">Scouts</a></li>
+
+              <li id="Dicas" class="menu"><a href="#">Dicas da rodada</a></li>
+
+            </ul>
+
+            <img src="https://via.placeholder.com/250.png?text=anuncio+pra+dar+dinheiro">
+
+          </div>
+
+
+
+          <div class="centro">
+            <div id="Principal">
+              <div id="pri1">
+                <a href="#"> <p><img src="https://resumo.com.br/wp-content/uploads/2018/10/16101311368_5883dbc23d_o-1-800x400.jpg" alt=""></p> <p> <h1>Vem pro crime!</h1> </p> <p>Cuellar diz em entrevista: "Vou roubar mais bola do que cleptomaníaco em loja de bolinha de gude"</p> </a>
+              </div>
+
+
+            </div>
+
+            <div class="secundario">
+
+              <div id="sec1" class="sec">
+                <a href="{% url 'cartola:PartidaProfile' 266 %}"> <p><img src="https://resumo.com.br/wp-content/uploads/2018/09/Botafogo-x-S%C3%A3o-Paulo-800x400.jpg" alt=""></p> <p> <h1>Pelada do caralho</h1> </p> <p>Duas bananas jogando, provavelmente os dois vao perder</p> </a>
+              </div>
+
+              <div id="sec2" class="sec">
+                <a href="{% url 'cartola:jogProfile' 86757 %}"> <p><img src="http://images-ahn.mdstrm.com/2017/10/07/207203_1_59d9209cd081d.jpg?d=800x400" alt=""></p> <p> <h1>Desafio aceito</h1> </p> <p>Everton Cebolinha vira japones pra tentar ver pior e fazer menos pontos no Cartola FC</p> </a>
+              </div>
+
+            </div>
+
+          <div class="secundario">
+            <div id="sec3" class="sec">
+              <a href="{% url 'cartola:PartidasRodada' 2018 37 %}"> <p><img src="https://pbs.twimg.com/media/DsyFCoiXQAAnlcd.jpg" alt=""></p> <p> <h1> Rodada 37</h1> </p> <p>Saíram as dicas pra rodada 37, mesmo com o Caruso viajando e sem olhar a rodada</p> </a>
+            </div>
+          </div>
+
+          </div>
+
+          <div class="rightbar">
+            <p>De olho no nosso feed </p>
+
+            <a class="twitter-timeline" data-width="280" data-height="600" data-theme="dark" data-link-color="#FAB81E" href="https://twitter.com/estats_cartola?ref_src=twsrc%5Etfw">Tweets by estats_cartola</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+            <p>Coletanea de setoristas</p>
+
+            <a class="twitter-timeline" data-width="280" data-height="600" data-theme="dark" data-link-color="#FAB81E" href="https://twitter.com/estats_cartola/lists/tweets-sobre-o-cartola-fc?ref_src=twsrc%5Etfw">A Twitter List by estats_cartola</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
+
+        </div>
+      </body>
+
+      <footer>
+
+        <div id="footer">
+
+          <a href="http://anaislab.com/" target="_blank"><img src="Estats.png" class="Flogo"></a>
+
+
+          <div class="footer-social-icons">
+                <ul class="social-icons">
+                <li><a href="https://www.facebook.com/estatscartola/" target="_blank" class="social-icon"> <i class="fa fa-facebook"></i></a></li>
+                <li><a href="https://twitter.com/estats_cartola" target="_blank" class="social-icon"> <i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.youtube.com/channel/UCdpsiVZic8-Io0QMjeAApSA" target="_blank" class="social-icon"> <i class="fa fa-youtube"></i></a></li>
+                <li><a href="https://www.instagram.com/estats_cartola" target="_blank" class="social-icon"> <i class="fa fa-instagram"></i></a></li>
+            </ul>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+          </div>
+
+        </div>
+      </footer>
 
 </html>

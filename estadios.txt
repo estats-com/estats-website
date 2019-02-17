@@ -1,0 +1,25 @@
+,nome,uf,cidade,longitude,latitude
+0,Mineirão,MG,Belo Horizonte,,
+1,Arena da Baixada,PR,Curitiba,,
+2,Independência,MG,Belo Horizonte,,
+3,Barradão,BA,Salvador,,
+4,São Januário,RJ, Rio de Janeiro,-43.228040,-22.891136
+5,Engenhão,RJ,Rio de Janeiro,-43.292333,-22.893215
+6,Morumbi,SP,São Paulo,,
+7,Pacaembu,SP,São Paulo,,
+8,Arena Corinthians,SP, São Paulo,,
+9,Beira-Rio,RS,Porto Alegre,,
+10,Durival Britto,PR,Curitiba,,
+11,Arena Condá,SC,Chapecó,,
+12,Fonte Nova,BA,Salvador,,
+13,Maracanã,RJ,Rio de Janeiro,-43.230169,-22.912071
+14,Castelão (CE),CE,Fortaleza,,
+15,Ilha do Retiro,PE,Recife,,
+16,Arena do Grêmio,RS,Porto Alegre,,
+17,Arena Palmeiras,SP,São Paulo,,
+18,Vila Belmiro,SP,Santos,,
+19,Arena de Pernambuco,PE,São Lourenço da Mata,,
+20,Mané Garrincha,DF,Brasília,,
+21,Presidente Vargas (CE),CE,Fortaleza,,
+22,Pituaçu,BA,Salvador,,
+23,Estádio do Café,PR,Londrina,-51.164914,-23.282351

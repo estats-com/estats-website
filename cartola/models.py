@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.conf import settings
 import os
 import datetime
 from operator import itemgetter
+from django.db.models import Q
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 def get_defaultPic():
-    return os.path.join(settings.BASE_DIR, '/media/logoEstats.png')
+    return os.path.join(settings.MEDIA_ROOT, 'logoEstats.png')
 
 class Jogador(models.Model):
 
@@ -18,26 +23,27 @@ class Jogador(models.Model):
     (6,'TEC')
     )
 
-    id = models.IntegerField(primary_key = True)
-    nome = models.CharField(max_length = 50)
+    cartola_id = models.IntegerField(blank = True, null = True)
+    nome = models.CharField(max_length = 25)
     posicao = models.IntegerField(choices = POSICOES)
-    foto = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, '/media/jogadores/'))
+    foto = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.MEDIA_ROOT, 'jogadores/'))
+    nomeCompleto = models.CharField(max_length = 100, blank = True)
 
     class Meta:
-        ordering = ['nome', 'posicao', 'id']
+        ordering = ['nome', 'posicao', 'cartola_id']
         verbose_name = 'jogador'
         verbose_name_plural = 'jogadores'
 
     def __str__(self):
         return "%s (%s)"%(self.nome, self.get_posicao_display())
 
-    def get_absolute_url(self):
-        return "/jog%s/"%self.id
+    # def get_absolute_url(self):
+    #     return None
 
     def get_clubeByData(self, dia):
         if not isinstance(dia, datetime.date):
             raise ValueError(u'Valor deve ser do tipo datetime.date')
-        return da.contrato_set.get(data_fim__gt = dia)
+        return self.contrato_set.get(data_fim__gt = dia).clube()
 
 class Estadio(models.Model):
     ESTADOS = (('RS', 'Rio Grande do Sul'),
@@ -78,24 +84,24 @@ class Estadio(models.Model):
         return "{} ({})".format(self.nome, self.uf)
 
 class Clube(models.Model):
-    id = models.IntegerField(primary_key = True)
+    cartola_id = models.IntegerField(blank = True,  null = True)
     nome = models.CharField(max_length = 30)
     nomeCBF = models.CharField(max_length = 30, blank = True)
     nomeELO = models.CharField(max_length = 30, blank = True)
     plantel = models.ManyToManyField(Jogador, through = "Contrato")
-    estadio = models.ForeignKey(Estadio, blank = True, null = True, related_name = 'clubes', on_delete = models.CASCADE)
-    escudoP = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, 'media/clubes/P/'))
-    escudoM = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, 'media/clubes/M/'))
-    escudoG = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.BASE_DIR, 'media/clubes/G/'))
+    estadio = models.ForeignKey(Estadio, on_delete=models.SET_NULL, blank = True, null = True, related_name = 'clubes')
+    escudoP = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.MEDIA_ROOT, 'clubes/P/'))
+    escudoM = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.MEDIA_ROOT, 'clubes/M/'))
+    escudoG = models.ImageField(default = get_defaultPic(), upload_to = os.path.join(settings.MEDIA_ROOT, 'clubes/G/'))
 
     class Meta:
-        ordering = ['nome','id']
+        ordering = ['nome','cartola_id']
 
     def __str__(self):
         return "%s"%(self.nome)
-
-    def get_absolute_url(self):
-        return "/clube%s/"%self.id
+    # 
+    # def get_absolute_url(self):
+    #     return None
 
 class Contrato(models.Model):
     jogador = models.ForeignKey(Jogador, on_delete = models.CASCADE)
@@ -104,20 +110,36 @@ class Contrato(models.Model):
     data_fim = models.DateField(default = datetime.datetime(9999,12,31))
 
     def em_vigor(self):
-        return self.data_fim > datetime.datetime.now().date()
+        return self.data_fim > timezone().now()
 
+    def clean(self):
+        super().clean()
+        date_filter = Q(data_inicio__lt=self.data_fim)&Q(data_fim__gt=self.data_inicio)
+        if (Contrato.objects.filter(jogador__cartola_id = self.jogador.cartola_id)  #contratos de um jogador
+                            .exclude(pk = self.pk)  #excluindo o contrato aqui avaliado
+                            .filter(date_filter)  #se tem overlap de tempo
+                            .exists()):
+            raise ValidationError(_("Jogador %(jog)s já possui contrato no período %(di)s - %(df)s"),
+                                  code = "Contrato_Overlap",
+                                  params = {'jog':self.jogador,
+                                            'di': self.data_inicio,
+                                            'df': self.data_fim},
+                                )
 
 class Partida(models.Model):
     ano = models.IntegerField()
     rodada = models.IntegerField()
-    mandante = models.ForeignKey(Clube, related_name = 'mandante', on_delete = models.CASCADE)
-    visitante = models.ForeignKey(Clube, related_name = 'visitante', on_delete = models.CASCADE)
+    mandante = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, related_name = 'mandante')
+    visitante = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, related_name = 'visitante')
     gol_mandante = models.IntegerField(blank = True, null = True)
     gol_visitante = models.IntegerField(blank = True, null = True)
     resultado = models.CharField(max_length = 1, blank = True)
     data = models.DateTimeField()
     validaCartola = models.BooleanField()
-    estadio = models.ForeignKey(Estadio, related_name = 'partidas', on_delete = models.CASCADE)
+    estadio = models.ForeignKey(Estadio, on_delete=models.SET_NULL, null=True,related_name = 'partidas')
+
+    class Meta:
+        ordering = ['ano','rodada','data','id']
 
     def save(self, *args, **kwds):
         if self.gol_mandante and self.gol_visitante:
@@ -130,13 +152,12 @@ class Partida(models.Model):
         super(Partida, self).save(*args, **kwds)
 
     def __str__(self):
-        return "{} - {}/{} {} {} x {} {}".format(self.id,
-                                                 self.ano,
-                                                 self.rodada,
-                                                 self.mandante,
-                                                 self.gol_mandante,
-                                                 self.gol_visitante,
-                                                 self.visitante)
+        return "{}/{} {} {} x {} {}".format(self.ano,
+                                            self.rodada,
+                                            self.mandante,
+                                            self.gol_mandante,
+                                            self.gol_visitante,
+                                            self.visitante)
 
 
 class Scouts(models.Model):
@@ -150,7 +171,7 @@ class Scouts(models.Model):
     )
     jogador = models.ForeignKey(Jogador, related_name = 'scouts', on_delete=models.CASCADE)
     partida = models.ForeignKey(Partida, related_name ='scouts', on_delete=models.CASCADE)
-    para = models.CharField(max_length = 10, default = 'mandante')
+    playFor = models.CharField(max_length = 10, default = 'mandante')
     #getClubeByData -> usar classe Membership para buscar qual clube na data da partida estava o jogador
     #local - MAN ou VIS dependendo da partida e qual clue membership na data
     preco = models.FloatField()

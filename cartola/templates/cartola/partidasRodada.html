@@ -1,0 +1,9 @@
+{% if partidas %}
+    <ul>
+    {% for partida in partidas %}
+        <li><a href="{% url 'cartola:PartidaProfile' partida.id %}">{{ partida }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Sem partidas para essa rodada.</p>
+{% endif %}

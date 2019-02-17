@@ -11,4 +11,5 @@ jogs = scouts.loc[~scouts.index.get_level_values(0).duplicated()]
 
 jogs = jogs.reset_index()[['ID','NOME','POSICAO']]
 jogs.columns = map(lambda x: x.lower(), jogs.columns)
-jogsObj = jogs.apply(lambda x: Jogador.objects.create(**x), axis = 1)
+jogs['cartola_id'] = jogs.id.copy()
+jogsObj = jogs[['cartola_id','nome','posicao']].apply(lambda x: Jogador.objects.update_or_create(**x), axis = 1)
