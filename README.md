@@ -8,7 +8,7 @@ python 3.7 venv pode ser reproduzido com arquivo env.yml usando o conda
   Ao instalar **não** escolher para instalar no PATH ou criar varíavel de ambiente.
 
 * Abrir o *Anaconda Prompt* e criar um ambiente virtual, idealmente a partir do arquivo .yml distribuído aqui. Para tal,
-  procurar o diretório que clonou o objeto e dar `cd C:/caminho/para/diretorio/do/projeto/estats` depois `conda create env -f  env.yml`. Um ambiente virtual com as dependências do projeto django deve ser criado com o nome **webDev**
+  procurar o diretório que clonou o objeto e dar `cd C:/caminho/para/diretorio/do/projeto/estats` depois `conda env create -f  env.yml`. Um ambiente virtual com as dependências do projeto django deve ser criado com o nome **webDev**
 
 * **Sempre** que for mexer no projeto django, deve-se ativar o ambiente primeiro, ou seja,
     1. Abrir o *Anaconda Prompt*
